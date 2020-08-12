@@ -40,10 +40,14 @@ def cancel_mirror(update,context):
                 sendMessage(msg,context.bot,update)
                 return
     if dl.status() == "Uploading":
-        sendMessage("Upload in Progress, Don't Cancel it.", context.bot, update)
+        dl.download().cancel_download()
+    sleep(1)  # Wait a Second For Aria2 To free Resources.
+    clean_download(f'{DOWNLOAD_DIR}{mirror_message.message_id}/')
         return
     elif dl.status() == "Archiving":
-        sendMessage("Archival in Progress, Don't Cancel it.", context.bot, update)
+        dl.download().cancel_download()
+    sleep(1)  # Wait a Second For Aria2 To free Resources.
+    clean_download(f'{DOWNLOAD_DIR}{mirror_message.message_id}/')
         return
     else:
         dl.download().cancel_download()
